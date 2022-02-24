@@ -6,11 +6,6 @@ from django.shortcuts import render,redirect
 from .models import Article
 
 # Create your views here.
-def news_of_day(request):
-    date = dt.date.today()
-    return render(request,'all-news/today-news.html',{'date':date,})
-
-
 def past_days_news(request,year,month,day):
 
     try:
@@ -21,7 +16,7 @@ def past_days_news(request,year,month,day):
         assert False
 
     if date == dt.date.today():
-        return redirect(news_of_day)
+        return redirect(news_today)
 
     news = Article.days_news(date)
     
