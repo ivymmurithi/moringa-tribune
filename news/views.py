@@ -1,19 +1,26 @@
+from urllib import request
 from django.forms import ValidationError
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import Http404,HttpResponse, HttpResponseRedirect
 import datetime as dt
 from django.shortcuts import render,redirect
 from .models import Article, NewsLetterRecipients
 from .forms import NewsLetterForm
 from .email import send_welcome_email
-from  django.contrib.auth import login,authenticate
-from django.contrib.auth.forms import UserCreationForm
+# from  django.contrib.auth import login,authenticate
+from .forms import RegisterForm
 
 
 # Create your views here.
-def register(response):
-    form = UserCreationForm()
-    return render(response, 'registration/registration_form.html', {'form':form})
+def register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('news/')
+    else:
+        form = RegisterForm
+    return render(request, 'registration/registration_form.html', {'form':form})
 
 def past_days_news(request,year,month,day):
 
