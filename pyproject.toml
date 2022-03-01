@@ -9,7 +9,6 @@ python = "^3.8"
 Django = "^4.0.2"
 psycopg2 = "^2.9.3"
 Pillow = "^9.0.1"
-django-registration = "^3.2"
 
 [tool.poetry.dev-dependencies]
 

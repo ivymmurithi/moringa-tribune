@@ -6,8 +6,15 @@ from django.shortcuts import render,redirect
 from .models import Article, NewsLetterRecipients
 from .forms import NewsLetterForm
 from .email import send_welcome_email
+from  django.contrib.auth import login,authenticate
+from django.contrib.auth.forms import UserCreationForm
+
 
 # Create your views here.
+def register(response):
+    form = UserCreationForm()
+    return render(response, 'registration/registration_form.html', {'form':form})
+
 def past_days_news(request,year,month,day):
 
     try:
