@@ -5,7 +5,7 @@ from django.http import Http404,HttpResponse, HttpResponseRedirect
 import datetime as dt
 from django.shortcuts import render,redirect
 from .models import Article, NewsLetterRecipients
-from .forms import NewsLetterForm
+from .forms import NewsLetterForm, NewsArticleForm
 from .email import send_welcome_email
 # from  django.contrib.auth import login,authenticate
 from .forms import RegisterForm
@@ -23,6 +23,7 @@ def register(request):
         form = RegisterForm
     return render(request, 'registration/registration_form.html', {'form':form})
 
+@login_required
 def past_days_news(request,year,month,day):
 
     try:
@@ -57,6 +58,7 @@ def news_today(request):
         form = NewsLetterForm()
     return render(request, 'all-news/today-news.html', {"date":date,"news":news, "letterForm":form})
 
+@login_required
 def search_results(request):
     if 'article' in request.GET and request.GET["article"]:
         search_term = request.GET.get("article")
@@ -69,9 +71,24 @@ def search_results(request):
         message = "You haven't searched for any term"
         return render(request, 'all-news/search.html',{"message":message})
 
+@login_required
 def article(request, article_id):
     try:
         article = Article.objects.get(id = article_id)
     except:
         raise Http404()
     return render(request, 'all-news.article.html', {"article":article})
+
+@login_required
+def new_article(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = NewsArticleForm(request.POST, request.FILES)
+        if form.is_valid():
+            article = form.save(commit=False)
+            article.editor = current_user
+            article.save()
+        return redirect('newstoday')
+    else:
+        form = NewsArticleForm()
+    return render(request, 'new_article.html', {'form':form})

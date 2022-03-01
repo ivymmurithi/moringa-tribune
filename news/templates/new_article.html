@@ -1,0 +1,17 @@
+{%extends 'all-news/base.html'%}
+{% load static %}
+
+
+{% block content %}
+
+    <title>New Article</title>
+    {{form.media}}
+
+    <form action="{%url 'new-article'%}" method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+        {{form}}
+        <input type="submit" class="btn btn-success btn-lg" value="Post">
+    </form>
+
+{% endblock %}
+
