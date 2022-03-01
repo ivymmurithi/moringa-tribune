@@ -9,6 +9,7 @@ from .forms import NewsLetterForm
 from .email import send_welcome_email
 # from  django.contrib.auth import login,authenticate
 from .forms import RegisterForm
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -38,6 +39,7 @@ def past_days_news(request,year,month,day):
     
     return render(request, 'all-news/past-news.html',{"date":date, "news":news})
 
+@login_required
 def news_today(request):
     date = dt.date.today()
     news = Article.todays_news()

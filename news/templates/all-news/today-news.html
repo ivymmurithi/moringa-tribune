@@ -1,4 +1,6 @@
 {%extends 'all-news/base.html'%}
+
+{% if user.is_authenticated %}
 {% block content %}
 {{ block.super}}
 
@@ -42,5 +44,8 @@
     </div>
 
 </div>
-
 {% endblock %}
+
+{% else %}
+<p><a href="login/">Login Here</a></p>
+{% endif %}
