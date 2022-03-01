@@ -21,6 +21,17 @@ python-versions = ">=3.6"
 tzdata = ["tzdata"]
 
 [[package]]
+name = "confusable-homoglyphs"
+version = "3.2.0"
+description = "Detect confusable usage of unicode homoglyphs, prevent homograph attacks."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.extras]
+cli = ["click"]
+
+[[package]]
 name = "django"
 version = "4.0.2"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
@@ -37,6 +48,18 @@ tzdata = {version = "*", markers = "sys_platform == \"win32\""}
 [package.extras]
 argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
+
+[[package]]
+name = "django-registration"
+version = "3.2"
+description = "An extensible user-registration application for Django"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+confusable-homoglyphs = ">=3.0,<4.0"
+Django = ">=2.2,<3.0.0 || >=3.1.0"
 
 [[package]]
 name = "pillow"
@@ -73,7 +96,7 @@ python-versions = ">=2"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "23ed8f694302f28029a2f4691630045f265cab2f5dea8782a484917f31ffa20b"
+content-hash = "22252fa2d8e8afd523df853d32c9dec0502b584d729e3c9c4fa9844a78dd1aa7"
 
 [metadata.files]
 asgiref = [
@@ -98,9 +121,17 @@ asgiref = [
     {file = "backports.zoneinfo-0.2.1-cp38-cp38-win_amd64.whl", hash = "sha256:4a0f800587060bf8880f954dbef70de6c11bbe59c673c3d818921f042f9954a6"},
     {file = "backports.zoneinfo-0.2.1.tar.gz", hash = "sha256:fadbfe37f74051d024037f223b8e001611eac868b5c5b06144ef4d8b799862f2"},
 ]
+confusable-homoglyphs = [
+    {file = "confusable_homoglyphs-3.2.0-py2.py3-none-any.whl", hash = "sha256:e3ce611028d882b74a5faa69e3cbb5bd4dcd9f69936da6e73d33eda42c917944"},
+    {file = "confusable_homoglyphs-3.2.0.tar.gz", hash = "sha256:3b4a0d9fa510669498820c91a0bfc0c327568cecec90648cf3819d4a6fc6a751"},
+]
 django = [
     {file = "Django-4.0.2-py3-none-any.whl", hash = "sha256:996495c58bff749232426c88726d8cd38d24c94d7c1d80835aafffa9bc52985a"},
     {file = "Django-4.0.2.tar.gz", hash = "sha256:110fb58fb12eca59e072ad59fc42d771cd642dd7a2f2416582aa9da7a8ef954a"},
+]
+django-registration = [
+    {file = "django-registration-3.2.tar.gz", hash = "sha256:2ea8c7d89a8760ccde41dfd335aa28ba89073d09aab5a0f5f3d7c8c148fcc518"},
+    {file = "django_registration-3.2-py3-none-any.whl", hash = "sha256:e79fdbfa22bfaf4182efccb6604391391a7de19438d2669c5b9520a7708efbd2"},
 ]
 pillow = [
     {file = "Pillow-9.0.1-1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:a5d24e1d674dd9d72c66ad3ea9131322819ff86250b30dc5821cbafcfa0b96b4"},
