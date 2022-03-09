@@ -1,16 +1,15 @@
 from urllib import request
 from django.forms import ValidationError
 from django.shortcuts import render, redirect
-from django.http import Http404,HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 import datetime as dt
 from django.shortcuts import render,redirect
 from .models import Article, NewsLetterRecipients
 from .forms import NewsLetterForm, NewsArticleForm
 from .email import send_welcome_email
-# from  django.contrib.auth import login,authenticate
 from .forms import RegisterForm
 from django.contrib.auth.decorators import login_required
-
+from django.http import JsonResponse
 
 # Create your views here.
 def register(request):
@@ -44,18 +43,7 @@ def past_days_news(request,year,month,day):
 def news_today(request):
     date = dt.date.today()
     news = Article.todays_news()
-
-    if request.method == 'POST':
-        form = NewsLetterForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['your_name']
-            email = form.cleaned_data['email']
-            recipient = NewsLetterRecipients(name = name, email = email)
-            recipient.save()
-            send_welcome_email(name,email)
-            HttpResponseRedirect('news_today')
-    else:
-        form = NewsLetterForm()
+    form = NewsLetterForm()
     return render(request, 'all-news/today-news.html', {"date":date,"news":news, "letterForm":form})
 
 @login_required
@@ -92,3 +80,14 @@ def new_article(request):
     else:
         form = NewsArticleForm()
     return render(request, 'new_article.html', {'form':form})
+
+@login_required
+def newsletter(request):
+    name = request.POST.get('your_name')
+    email = request.POST.get('email')
+
+    recipient = NewsLetterRecipients(name=name, email=email)
+    recipient.save()
+    send_welcome_email(name, email)
+    data = {'success': 'You have been successfully added to mailing list'}
+    return JsonResponse(data)
