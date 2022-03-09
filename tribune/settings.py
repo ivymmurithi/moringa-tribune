@@ -33,15 +33,16 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'news',
+    'crispy_forms',
+    'tinymce',
+    'rest_framework',
+    'rest_framework.authtoken',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy_forms',
-    'tinymce',
-    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -147,3 +148,9 @@ CRISPY_TEMPLATE_PACK='bootstrap4'
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = 'newsToday'
 LOGOUT_REDIRECT_URL = ''
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}

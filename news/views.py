@@ -13,6 +13,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from .serializer import MerchSerializer
+from rest_framework import status
+from .permissions import IsAdminOrReadOnly
+
+from news import serializer
 
 # Create your views here.
 def register(request):
@@ -102,10 +106,28 @@ returns a response. Its the main entry-point in
 request-response cycle in case of generic views.
 """
 class MerchList(APIView):
+    permission_classes = (IsAdminOrReadOnly,)
     # get method that will:
-    def get(self,request, format=None):
+    def get(self, request, format=None):
         # query the database to get all the MoringaMerchobjects
-        all_merch = MerchSerializer.objects.all()
+        all_merch = MoringaMerch.objects.all() 
         # serialize the Django model objects and return the serialized data as a response
         serializers = MerchSerializer(all_merch, many=True)
         return Response(serializers.data)
+
+    """
+    request.data attribute, which is similar to request.POST, but more useful for working with Web APIs.
+
+    request.POST # Only handles form data. Only works for 'POST' method.
+
+    request.data # Handles arbitrary data. Works for 'POST', 'PUT' and 'PATCH' methods.
+    """
+    
+    # request. data to access JSON data for 'POST', 'PUT' and 'PATCH' requests
+    def post(self, request, format=None):
+        serializers = MerchSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializers.errors)
