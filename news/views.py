@@ -1,15 +1,20 @@
+from tkinter import N
 from urllib import request
 from django.forms import ValidationError
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponseRedirect
 import datetime as dt
 from django.shortcuts import render,redirect
-from .models import Article, NewsLetterRecipients
+from .models import Article, NewsLetterRecipients,MoringaMerch
 from .forms import NewsLetterForm, NewsArticleForm
 from .email import send_welcome_email
 from .forms import RegisterForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from .serializer import MerchSerializer
 
 # Create your views here.
 def register(request):
@@ -91,3 +96,12 @@ def newsletter(request):
     send_welcome_email(name, email)
     data = {'success': 'You have been successfully added to mailing list'}
     return JsonResponse(data)
+
+class MerchList(APIView):
+    # get method that will:
+    def get(self,request, format=None):
+        # query the database to get all the MoringaMerchobjects
+        all_merch = MerchSerializer.objects.all()
+        # serialize the Django model objects and return the serialized data as a response
+        serializers = MerchSerializer(all_merch, many=True)
+        return Response(serializers.data)
