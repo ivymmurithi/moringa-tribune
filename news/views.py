@@ -1,3 +1,4 @@
+from re import M
 from django.forms import ValidationError
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponseRedirect
@@ -106,8 +107,7 @@ returns a response. Its the main entry-point in
 request-response cycle in case of generic views.
 """
 class MerchList(APIView):
-    permission_classes = (IsAdminOrReadOnly,)
-    # get method that will:
+      # get method that will:
     def get(self, request, format=None):
         # query the database to get all the MoringaMerchobjects
         all_merch = MoringaMerch.objects.all() 
@@ -122,7 +122,7 @@ class MerchList(APIView):
 
     request.data # Handles arbitrary data. Works for 'POST', 'PUT' and 'PATCH' methods.
     """
-    
+
     # request. data to access JSON data for 'POST', 'PUT' and 'PATCH' requests
     def post(self, request, format=None):
         serializers = MerchSerializer(data=request.data)
@@ -131,3 +131,17 @@ class MerchList(APIView):
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializers.errors)
+
+class MerchDescription(APIView):
+    permission_classes = (IsAdminOrReadOnly,)
+
+    def get_merch(self, pk):
+        try:
+            return MoringaMerch.objects.get(pk=pk)
+        except MoringaMerch.DoesNotExist:
+            return Http404
+            
+    def get(self, request, pk, format=None):
+        merch = self.get_merch(pk)
+        serializers = MerchSerializer(merch)
+        return Response(serializers.data)
