@@ -1,56 +1,55 @@
 {%extends 'all-news/base.html'%}
+{% load static %}
 
-{% if user.is_authenticated %}
 {% block content %}
 {{ block.super}}
 
-<div class="container">
+    <div class="container">
 
-    <!-- Looping through news   -->
-    {% for news_item in news %}
-    
-    <div class="row">
-        <!-- displaying News articles -->
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <h2 class="text-center"> {{ news_item.title }} </h2>
-        </div>
-    
-        <!--Display news Article images  -->
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <img src="{{news_item.article_image.url}}" class="img-responsive" alt="Image">
-        </div>
-    
-    </div>
-
-    {% empty %}
-    <div class="row">
-        <h2 class="text-center">There No News Items</h2>
-    </div>
-    {% endfor %}
-
-    <div class="container-fluid">
-    
-        <form action="{%url 'newsToday'%}" method="post">
-            {%csrf_token%}
-
-            <div class="row">
-                <div class="col">
-                    {{letterForm}}
-                </div>
+        <!-- Looping through news   -->
+        {% for news_item in news %}
+        
+        <div class="row">
+            <!-- displaying News articles -->
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <h2 class="text-center"> {{ news_item.title }} </h2>
             </div>
-            <input type="submit" value="Subscribe">
-        </form>
-    
+        
+            <!--Display news Article images  -->
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <img src="{{news_item.article_image.url}}" class="img-responsive" alt="Image">
+            </div>
+        
+        </div>
+
+        {% empty %}
+        <div class="row">
+            <h2 class="text-center">There No News Items</h2>
+        </div>
+        {% endfor %}
+
+        <div class="container-fluid">
+        
+            <form action="{%url 'newsToday'%}" method="post">
+                {%csrf_token%}
+
+                <div class="row">
+                    <div class="col">
+                        {{letterForm}}
+                    </div>
+                </div>
+                <input type="submit" value="Subscribe">
+            </form>
+        
+        </div>
+
     </div>
 
-</div>
-
-{% else %}
-<p><a href="login/">Login Here</a></p>
-{% endif %}
-{% endblock %}
 
 {% block scripts %} 
 {{block.super}}
 <script type="text/javascript" src="{%static 'js/newsletter.js'%}"></script>
+{% endblock %}
+
+
 {% endblock %}
