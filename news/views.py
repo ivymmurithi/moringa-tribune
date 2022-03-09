@@ -96,7 +96,13 @@ def newsletter(request):
     send_welcome_email(name, email)
     data = {'success': 'You have been successfully added to mailing list'}
     return JsonResponse(data)
-
+    
+"""
+In Class-based views, you have to call as_view() function 
+so as to return a callable view that takes a request and
+returns a response. Its the main entry-point in 
+request-response cycle in case of generic views.
+"""
 class MerchList(APIView):
     # get method that will:
     def get(self,request, format=None):
