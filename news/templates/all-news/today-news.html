@@ -44,8 +44,12 @@
     </div>
 
 </div>
-{% endblock %}
 
 {% else %}
 <p><a href="login/">Login Here</a></p>
 {% endif %}
+{% endblock %}
+
+{% block scripts %} {{block.super}}
+<script type="text/javascript" src="{%static 'js/newsletter.js'%}"></script>
+{% endblock %}
